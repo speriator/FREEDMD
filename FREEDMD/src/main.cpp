@@ -148,6 +148,10 @@ extern "C" void SPI1_IRQHandler(void) {
       frameBuffer[currentFrameIndex][lineCounter][spi16BufferIndex] = data;
       spi16BufferIndex++;
     }
+    if(spi16BufferIndex >= WORD_BUFFER_SIZE) {
+      // Disable SPI reception
+      SPI1->CR1 &= ~SPI_CR1_SPE;
+    }
     // End-of-line indication is handled in the column strobe ISR
   }
 }
@@ -174,7 +178,9 @@ extern "C" void columnStrobeISR(void) {
       lineCounter++;
     }
   }
-  
+  SPI1->DR;
+  // Re-enable SPI reception
+  SPI1->CR1 |= SPI_CR1_SPE;
   // Set strobe flag for debugging or further processing
   strobe = true;
 }
@@ -319,7 +325,7 @@ void refreshHUB75Output() {
       
       toggleDisplayLatch();
       enableDisplayOutput();
-      delayMicroseconds(200);
+      delayMicroseconds(20);
       disableDisplayOutput();
   }
   
