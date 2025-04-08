@@ -254,15 +254,19 @@ void initHUB75Outputs(void) {
 // Writes pixel data for top (rows 0-15) and bottom (rows 16-31)
 void writePixelData(uint8_t topPixel, uint8_t bottomPixel) {
   if (topPixel) {
-    GPIOE->BSRR = (DISPLAY_R0 | DISPLAY_G0 | DISPLAY_B0);
-  } else {
-    GPIOE->BSRR = ((DISPLAY_R0 | DISPLAY_G0 | DISPLAY_B0) << 16);
-  }
+//    GPIOE->BSRR = (DISPLAY_R0 | DISPLAY_G0 | DISPLAY_B0);
+    GPIOE->BSRR = (DISPLAY_R0);
+} else {
+//    GPIOE->BSRR = ((DISPLAY_R0 | DISPLAY_G0 | DISPLAY_B0) << 16);
+    GPIOE->BSRR = ((DISPLAY_R0) << 16);
+}
   
   if (bottomPixel) {
-    GPIOE->BSRR = (DISPLAY_R1 | DISPLAY_G1 | DISPLAY_B1);
+  //  GPIOE->BSRR = (DISPLAY_R1 | DISPLAY_G1 | DISPLAY_B1);
+    GPIOE->BSRR = (DISPLAY_R1);
   } else {
-    GPIOE->BSRR = ((DISPLAY_R1 | DISPLAY_G1 | DISPLAY_B1) << 16);
+  //  GPIOE->BSRR = ((DISPLAY_R1 | DISPLAY_G1 | DISPLAY_B1) << 16);
+    GPIOE->BSRR = ((DISPLAY_R1) << 16);
   }
 }
 
@@ -325,7 +329,7 @@ void refreshHUB75Output() {
       
       toggleDisplayLatch();
       enableDisplayOutput();
-      delayMicroseconds(20);
+      delayMicroseconds(50);
       disableDisplayOutput();
   }
   
